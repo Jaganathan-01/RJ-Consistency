@@ -6,7 +6,6 @@ RJ Consistency is an offline-first Progressive Web Application designed for Andr
 
 ```
 ├── public/
-│   ├── _redirects               # Cloudflare Pages SPA fallback
 │   ├── icon.svg                 # Vector app icon
 │   ├── apple-touch-icon.png     # 180x180 iOS icon
 │   ├── pwa-192x192.png          # 192x192 Android icon
@@ -67,12 +66,11 @@ npm run build
    git remote add origin https://github.com/<username>/consistency-pwa.git
    git push -u origin main
    ```
-2. Log in to **Cloudflare Dashboard** → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+2. Log in to **Cloudflare Dashboard** → **Workers & Pages** → **Create** → **Import a repository**.
 3. Select your GitHub repository and configure:
-   - **Framework preset**: Vite
    - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-4. Deploy. Cloudflare Pages serves the app over a public **HTTPS** URL (`https://<project>.pages.dev`) with `public/_redirects` handling SPA fallback routing.
+   - **Deploy command**: `npx wrangler deploy`
+4. Deploy. Cloudflare Workers serves the app over a public **HTTPS** URL (`https://<project>.<subdomain>.workers.dev`) with `wrangler.jsonc` (`not_found_handling: "single-page-application"`) handling SPA fallback routing.
 
 ## Android PWA Installation Instructions
 
