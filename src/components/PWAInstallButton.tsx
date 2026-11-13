@@ -55,9 +55,18 @@ export function PWAInstallButton({ compact = false }: { compact?: boolean }) {
               </ol>
             ) : (
               <ol className="list-decimal space-y-2 pl-5">
-                <li>Open this URL over HTTPS in Chrome on Android or desktop.</li>
-                <li>Tap the browser menu and select Install app or Add to Home screen.</li>
-                <li>Launch RJ Consistency directly from your home screen in standalone mode.</li>
+                <li>
+                  Open your deployed <span className="font-mono text-xs">.workers.dev</span> HTTPS URL
+                  directly in regular <strong>Chrome</strong> (not Incognito or an in-app browser).
+                </li>
+                <li>
+                  Reload the page once so the offline service worker activates, then tap Chrome&apos;s{' '}
+                  <strong>⋮</strong> menu → <strong>Add to Home screen</strong> → <strong>Install</strong>{' '}
+                  (not <em>Create shortcut</em>).
+                </li>
+                <li>
+                  Launch <strong>RJ Consistency</strong> from your home screen in standalone mode.
+                </li>
               </ol>
             )}
           </div>

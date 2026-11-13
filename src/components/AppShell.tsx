@@ -3,6 +3,7 @@ import {
   BarChart3,
   CheckCircle2,
   Clock,
+  Download,
   Flame,
   History,
   LayoutDashboard,
@@ -18,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { usePWAInstall } from '../hooks/usePWAInstall';
 import { useAppStore } from '../store/useAppStore';
 import type { AppSection } from '../types/models';
 import { formatSecondsClock } from '../utils/dateUtils';
@@ -66,7 +68,9 @@ export function AppShell({
   } = useAppStore();
 
   const isOnline = useOnlineStatus();
+  const { isInstallable, isInstalled, install } = usePWAInstall();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [installBannerDismissed, setInstallBannerDismissed] = useState(false);
 
   const pendingRecoveryCount = recoveryChallenges.filter(
     (r) => r.challengeStatus === 'PENDING' || r.challengeStatus === 'IN_PROGRESS'
@@ -220,7 +224,35 @@ export function AppShell({
 
       {/* Main Content Area */}
       <main className="flex-1 lg:pl-64 pb-24 lg:pb-10">
-        <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8 lg:py-8">{children}</div>
+        <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:px-8 lg:py-8">
+          {isInstallable && !isInstalled && !installBannerDismissed && (
+            <div className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm">
+              <div className="min-w-0">
+                <div className="font-semibold text-emerald-700 dark:text-emerald-300">
+                  Install RJ Consistency
+                </div>
+                <div className="text-xs text-slate-600 dark:text-slate-300">
+                  Install on your home screen for offline use and full-screen app mode.
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <Button size="sm" onClick={() => void install()}>
+                  <Download className="h-4 w-4" />
+                  <span>Install</span>
+                </Button>
+                <button
+                  type="button"
+                  onClick={() => setInstallBannerDismissed(true)}
+                  aria-label="Dismiss install prompt"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-200/60 dark:text-slate-400 dark:hover:bg-slate-800 cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
+          {children}
+        </div>
       </main>
 
       {/* Mobile Fixed Bottom Navigation (compact 60px + safe-area) */}
